@@ -1,16 +1,8 @@
-﻿using System;
-using System.Xml;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Xml.Linq;
-using System.Xml.Xsl;
-using System.Diagnostics;
+﻿using CodeTest.Models;
+using System;
 using System.Collections.Concurrent;
-using CodeTest.Models;
-using System.Threading;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace CodeTest
 {
