@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HelperClasses\HTMLConverter.cs" />
+    <Compile Include="HelperClasses\XMLReader.cs" />
+    <Compile Include="Models\HTMLCreator.cs" />
+    <Compile Include="Models\XMLProducer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
