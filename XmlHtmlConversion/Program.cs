@@ -1,10 +1,8 @@
-﻿using CodeTest.Models;
-using System;
-using System.Collections.Concurrent;
-using System.IO;
+﻿using System;
 using System.Threading.Tasks;
+using XmlHtmlConversion.Models;
 
-namespace CodeTest
+namespace XmlHtmlConversion
 {
     class Program
     {

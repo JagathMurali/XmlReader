@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 
-namespace CodeTest.Models
+namespace XmlHtmlConversion.Models
 {
     public class HTMLConvertor
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-using CodeTest.Models;
+using XmlHtmlConversion.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTest
@@ -23,20 +23,20 @@ namespace UnitTest
             Assert.AreEqual(sampleQueue.xmlConverterQueue.Count, 1);
         }
 
-        [TestMethod]
-        public void CheckXmlFileIsAddedIntoQueueAfterReadingAndParsing()
-        {
-            // Arrange
-            XMLStringQueue sampleQueue = new XMLStringQueue();
-            XMLParser xmlparser = new XMLParser(sampleQueue);
-            xmlparser.FolderPath = @"..\..\SampleInput\";
+        //[TestMethod]
+        //public void CheckXmlFileIsAddedIntoQueueAfterReadingAndParsing()
+        //{
+        //    // Arrange
+        //    XMLStringQueue sampleQueue = new XMLStringQueue();
+        //    XMLParser xmlparser = new XMLParser(sampleQueue);
+        //    xmlparser.FolderPath = @"..\..\SampleInput\";
 
-            // Act
-            xmlparser.GetFilesFromFolder();
+        //    // Act
+        //    xmlparser.GetFilesFromFolder();
 
-            // Assert
-            Assert.IsFalse(sampleQueue.xmlConverterQueue.IsEmpty);
-            Assert.AreEqual(sampleQueue.xmlConverterQueue.Count, 1);
-        }
+        //    // Assert
+        //    Assert.IsFalse(sampleQueue.xmlConverterQueue.IsEmpty);
+        //    Assert.AreEqual(sampleQueue.xmlConverterQueue.Count, 1);
+        //}
     }
 }

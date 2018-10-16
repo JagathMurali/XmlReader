@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Linq;
 
-namespace CodeTest.Models
+namespace XmlHtmlConversion.Models
 {
     public class XMLParser
     {
