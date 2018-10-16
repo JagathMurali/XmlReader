@@ -9,59 +9,26 @@ namespace CodeTest
     class Program
     {
 
-        static void Main(string[] args)
+        static void Main()
         {
-            ConcurrentQueue<string> xmlConverterQueue = new ConcurrentQueue<string>();
-            XMLProducer xmlProducer = new XMLProducer();
-            HTMLCreator htmlCreator = new HTMLCreator();
-            foreach (string file in Directory.EnumerateFiles(@"..\..\Data\Computers"))
-            {
-                string xmlString = xmlProducer.XDocumentToStringConverter(file);
-                xmlConverterQueue.Enqueue(xmlString);
-            }
+            // Class that have string queue to which the xml will be stored
+            XMLStringQueue xmlStringQueue = new XMLStringQueue();
+
+            // Initializing the xml parser and html convertor by passing the xml string queue class instance
+            XMLParser xmlparser = new XMLParser(xmlStringQueue);
+            HTMLConvertor htmlConverter = new HTMLConvertor(xmlStringQueue);
+
+            /*  XMLparser will run on the main thread and this will trigge the call to read xml file 
+             *  and convert it into string and place it into the queue */
+            xmlparser.GetFilesFromFolder();
+
+            /* Creating a second thread that reads the string from the queue
+             * and converts it into html file using xslt file*/
             Action action = () =>
             {
-                string xmlStringfromQueue;
-                while (xmlConverterQueue.TryDequeue(out xmlStringfromQueue))
-                {
-                    if (!string.IsNullOrEmpty(xmlStringfromQueue))
-                    {
-                        htmlCreator.ConvertXmlStringToHtml(xmlStringfromQueue);
-                    }
-                }
+                htmlConverter.ReadXmlStringAndConverttoHTML();
             };
             Parallel.Invoke(action);
         }
-
-        //public static string TransformXMLToHTML(string inputXml, string xsltString)
-        //{
-        //    XslCompiledTransform transform = new XslCompiledTransform();
-        //    XmlReaderSettings setting = new XmlReaderSettings();
-        //    setting.DtdProcessing = DtdProcessing.Parse;
-        //    using (XmlReader reader = XmlReader.Create(new StringReader(xsltString), setting))
-        //    {
-        //        transform.Load(reader);
-        //    }
-        //    StringWriter results = new StringWriter();
-        //    using (XmlReader reader = XmlReader.Create(new StringReader(inputXml)))
-        //    {
-        //        transform.Transform(reader, null, results);
-        //    }
-        //    return results.ToString();
-        //}
-
-        //public static void SaveHtmlFile(string htmlString, string filename)
-        //{
-        //    //TODO Create directory check if folder is created or not.
-        //    string fileName = @"..\..\Data\"+ filename+".html";
-          
-        //    //Write new HTML string to file
-        //    File.WriteAllText(fileName, htmlString);
-
-        //    //Show it in the default application for handling .html files
-        //    //Process.Start(fileName);
-        //}
-
-
     }   
 }
