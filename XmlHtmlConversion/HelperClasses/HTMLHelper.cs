@@ -1,42 +1,39 @@
-﻿using System;
+﻿using CodeTest.HelperClasses.Interfaces;
+using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 
-namespace XmlHtmlConversion.Models
+namespace XmlHtmlConversion.HelperClasses
 {
-    public class HTMLConvertor
+    public class HTMLHelper : IHTMLHelper
     {
-        public XMLStringQueue stringQueue;
-        private string filePathXslt = @"..\..\Resources\Computer.xslt";
-
-        public HTMLConvertor(XMLStringQueue _xmlStringQueue)
-        {
-            stringQueue = _xmlStringQueue;
-        }   
-
-        public void ReadXmlStringAndConverttoHTML()
-        {
-            string xmlStringfromQueue;
-            while (stringQueue.xmlConverterQueue.TryDequeue(out xmlStringfromQueue))
-            {
-                if (!string.IsNullOrEmpty(xmlStringfromQueue))
-                {
-                    ConvertXmlStringToHtml(xmlStringfromQueue);
-                }
-            }
-        }
+        public string FilePathXslt = @"..\..\Resources\Computer.xslt";
+        private string outputFolderPath = @"..\..\Data\Output\";
+        private string styleSheetPath = @"..\..\Resources\Style.css";
 
         /// <summary>
         /// Function to call other function to convert XML string to HTML file
         /// </summary>
         /// <param name="xmlString">xml string that taken form the queue</param>
-        private void ConvertXmlStringToHtml(string xmlString)
+        public void ConvertXmlStringToHtml(string xmlString)
         {
-            string xslString = LoadXsltFile();
-            string htmlString = TransformXMLToHTML(xmlString, xslString);
-            SaveHtmlFile(htmlString);
+            try
+            {
+                // Loads the XSLT file
+                string xsltString = LoadXsltFile();
+                // Transforms XML string to HTML string using xslt file
+                string htmlString = TransformXMLToHTML(xmlString, xsltString);
+
+                // Save the HTML string into file
+                SaveHtmlFile(htmlString);
+            }
+            catch(Exception)
+            {
+                throw new Exception("Converting XML to String and storing into file failed");
+            }
+            
         }
 
         /// <summary>
@@ -44,8 +41,8 @@ namespace XmlHtmlConversion.Models
         /// </summary>
         /// <returns>Returns the XSLT file in string format</returns>
         private string LoadXsltFile()
-        { 
-            XDocument xsltDocument = XDocument.Load(filePathXslt);
+        {
+            XDocument xsltDocument = XDocument.Load(FilePathXslt);
             return xsltDocument.ToString();
         }
 
@@ -58,7 +55,7 @@ namespace XmlHtmlConversion.Models
         private string TransformXMLToHTML(string inputXml, string xsltString)
         {
             XslCompiledTransform transform = new XslCompiledTransform();
-            // XMl reader setting to parse the xml to html
+            // XML reader setting to parse the xml to html
             XmlReaderSettings setting = new XmlReaderSettings
             {
                 DtdProcessing = DtdProcessing.Parse
@@ -83,15 +80,25 @@ namespace XmlHtmlConversion.Models
         /// <param name="htmlString">String that needs to be saved as a HTML file</param>
         private void SaveHtmlFile(string htmlString)
         {
-            string outputFolderPath = @"..\..\Data\Output\";
+            string outputStyleSheetPath = outputFolderPath + "Style.css";
+
+            // Create the folder, if it is not exist.
             Directory.CreateDirectory(outputFolderPath);
 
+            // Check for the style sheet present in the output folder
+            if (!File.Exists(outputStyleSheetPath))
+            {
+                // Copy the style sheet from resource folder to output folder
+                File.Copy(styleSheetPath, outputStyleSheetPath);
+            }
+
+            // Unique value for the file name
             Guid guid = Guid.NewGuid();
             string fileName = outputFolderPath + guid + ".html";
 
 
             //Write new HTML string to file
             File.WriteAllText(fileName, htmlString);
-        }      
+        }
     }
 }

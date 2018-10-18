@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\HTMLConvertor.cs" />
+    <Compile Include="HelperClasses\HTMLHelper.cs" />
+    <Compile Include="HelperClasses\Interfaces\IHTMLHelper.cs" />
+    <Compile Include="Models\HTMLConverter.cs" />
     <Compile Include="Models\XMLParser.cs" />
     <Compile Include="Models\XMLStringQueue.cs" />
     <Compile Include="Program.cs" />
